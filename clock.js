@@ -1,52 +1,107 @@
 
+var Digits=[];
 var Clocks=[];
 
 
 function setup() {
-  createCanvas(windowWidth, windowHeight);
+
+  c = createCanvas(windowWidth, windowHeight);
+
   background(0, 0, 0);
   fill(255);
-  for (var i = 2; i < 8; i++) {
-  	for(var j =2; j < 6; j++)
-  	{
-  		Clocks.push(new Clock((j*40),(i*40)));
-  	}
-  }
+  var spacing = 200;
+  for(var d =0; d<4;d++)
+  {
+    for (var i = 2; i < 8; i++)
+      {
+      	for(var j =2; j < 6; j++)
+      	{
+      		Clocks.push(new Clock((j*40+(spacing*d)),(i*40)));
+      	}
 
+      }
+
+  Digits.push(Clocks);
+  Clocks=[];
+
+
+
+}
 
 
 }
 
 function draw() {
-	
-	if(!keyIsDown(DOWN_ARROW))
-	{	
-		for(var i =0;i<Clocks.length;i++)
-		{
-			fill(255);
-			Clocks[i].drawClock();
-			Clocks[i].drawHands();
-			Clocks[i].rotateHands();
+    translate(windowWidth/4,windowHeight/4);
+	if(!mouseIsPressed)
+	{
 
-		}
-	}
+  		for(var i =0;i<Digits.length;i++)
+  		{
+        for(var j =0; j < Digits[i].length; j++)
+        {
+  			     fill(255);
+  		       Digits[i][j].drawClock();
+  			     Digits[i][j].drawHands();
+  			     Digits[i][j].rotateHands();
+        }
+
+
+  		}
+    }
+
 	else
 	{
-		for(var i=0;i<Clocks.length;i++)
-		{
-			fill(255);
-			Clocks[i].drawClock();
-			Clocks[i].drawHands();
-			Clocks[i].alignHands(i,4);
+    var d = new Date(); // for now
+    hours = d.getHours(); // => 9
+    if(hours>12)
+    {
+      hours=hours-12;
+    }
+    minutes = d.getMinutes(); // =>  30
 
+    sHours = hours.toString();
+    sMinutes = minutes.toString();
+    var numbers=[];
+    if(sHours.length == 1)
+    {
+      numbers.push(0);
+    }
+    for(var i = 0;i<sHours.length;i++)
+    {
+
+      numbers.push(sHours.charAt(i));
+
+    }
+
+    if(sMinutes.length == 1)
+    {
+      numbers.push(0);
+    }
+    for(var i = 0;i<sMinutes.length;i++)
+    {
+      numbers.push(sMinutes.charAt(i));
+    }
+
+		for(var i=0;i<Digits.length;i++)
+		{
+      for(var j =0;j<Digits[i].length;j++)
+      {
+			     fill(255);
+			     Digits[i][j].drawClock();
+			     Digits[i][j].drawHands();
+			     Digits[i][j].alignHands(j,numbers[i]);
+      }
 		}
 
-	}	
+	}
 
-  
+
 }
 
-
+function mouseReleased(){
+  redraw();
+}
 
 function Clock(x,y)
 {
@@ -55,7 +110,7 @@ function Clock(x,y)
 
 	var hand1 = random(0,360);
 	var hand2 = random(0,360);
-	
+
 
 	this.drawClock=function()
 	{
@@ -81,8 +136,8 @@ function Clock(x,y)
 	 	else
 	 	{
 	 		hand1 = 0;
-	 	}	
-		
+	 	}
+
 		if(hand2 != 360)
 		{
 			hand2 = hand2 + 1;
@@ -91,7 +146,7 @@ function Clock(x,y)
 		{
 			hand2 = 0;
 		}
-	
+
 	}
 
 	this.alignHands = function(clock,digit)
@@ -100,7 +155,7 @@ function Clock(x,y)
 		{
 			if(clock==0 || clock==5)
 			{
-				this.bottomRightHands();	
+				this.bottomRightHands();
 			}
 			if(clock==1 || clock==2 || clock==21 || clock==22)
 			{
@@ -111,7 +166,7 @@ function Clock(x,y)
 			{
 				this.bottomLeftHands();
 			}
-			if(clock == 4 || clock == 7 || clock == 8 || clock == 11 || clock == 12 || 
+			if(clock == 4 || clock == 7 || clock == 8 || clock == 11 || clock == 12 ||
 			   clock == 15 || clock == 16 || clock == 19 || clock == 9 || clock == 10 ||
 			   clock == 13 || clock == 14)
 			{
@@ -129,7 +184,7 @@ function Clock(x,y)
 
 		if(digit==1)
 		{
-			if(clock == 0 ||clock == 1 || clock == 4 || clock == 5 || clock == 8 
+			if(clock == 0 ||clock == 1 || clock == 4 || clock == 5 || clock == 8
 				|| clock == 9 || clock == 12 || clock == 13 || clock == 16 ||
 				clock == 17 || clock == 20 || clock == 21)
 			{
@@ -224,7 +279,7 @@ function Clock(x,y)
 		if(digit==4)
 		{
 			if(clock == 4 || clock == 5 || clock == 6 || clock == 7 ||
-				clock == 8  || clock == 11 || clock == 15 || clock == 18 
+				clock == 8  || clock == 11 || clock == 15 || clock == 18
 				|| clock == 19)
 			{
 				this.verticalHands();
@@ -257,7 +312,164 @@ function Clock(x,y)
 			}
 		}
 
-		
+    if(digit==5)
+    {
+      if(clock == 1 || clock == 2 || clock == 6 || clock == 10 ||
+      clock == 13 || clock == 17 || clock == 21 || clock == 22)
+      {
+        this.horizontalHands();
+      }
+      if(clock == 4 || clock == 8 || clock == 15 || clock == 19)
+      {
+        this.verticalHands();
+      }
+      if(clock == 0 || clock == 5 ||clock == 16)
+      {
+        this.bottomRightHands();
+      }
+      if(clock == 3 || clock == 11 || clock == 14)
+      {
+        this.bottomLeftHands();
+      }
+      if(clock == 9 || clock == 12 || clock == 20)
+      {
+        this.topRightHands();
+      }
+      if(clock == 7 || clock == 18 || clock == 23)
+      {
+        this.topLeftHands();
+      }
+    }
+
+    if(digit==6)
+    {
+      if(clock == 1 || clock == 2 || clock == 6 || clock == 10 ||
+      clock == 21 || clock == 22)
+      {
+        this.horizontalHands();
+      }
+      if(clock == 4 || clock == 8 || clock == 15 || clock == 19 ||
+      clock == 12 || clock == 16)
+      {
+        this.verticalHands();
+      }
+      if(clock == 0 || clock == 5 || clock == 13)
+      {
+        this.bottomRightHands();
+      }
+      if(clock == 3 || clock == 11 || clock == 14)
+      {
+        this.bottomLeftHands();
+      }
+      if(clock == 9 || clock == 20 || clock == 17)
+      {
+        this.topRightHands();
+      }
+      if(clock == 7 || clock == 18 || clock == 23)
+      {
+        this.topLeftHands();
+      }
+    }
+    if(digit==7)
+    {
+      if(clock == 8 || clock == 9 || clock == 12 || clock == 13 || clock == 16 ||
+        clock == 17 || clock == 20 || clock == 21)
+      {
+        this.noHands();
+      }
+
+      if(clock == 7 || clock == 10 ||clock == 11 ||clock == 14 ||
+        clock == 15 || clock == 18 || clock == 19)
+      {
+        this.verticalHands();
+      }
+      if(clock == 0)
+      {
+        this.bottomRightHands();
+      }
+      if(clock == 3 || clock == 6)
+      {
+        this.bottomLeftHands();
+      }
+      if(clock == 22 || clock == 4)
+      {
+        this.topRightHands();
+      }
+      if(clock == 1 || clock == 5 || clock == 2)
+      {
+        this.horizontalHands();
+      }
+      if(clock == 23)
+      {
+        this.topLeftHands();
+      }
+    }
+
+    if(digit==8)
+    {
+      if(clock == 1 || clock == 2  ||
+      clock == 21 || clock == 22)
+      {
+        this.horizontalHands();
+      }
+      if(clock == 4 || clock == 8 || clock == 15 || clock == 19 ||
+      clock == 12 || clock == 16 || clock == 7 || clock == 11)
+      {
+        this.verticalHands();
+      }
+      if(clock == 0 || clock == 5 || clock == 13)
+      {
+        this.bottomRightHands();
+      }
+      if(clock == 3  || clock == 14|| clock == 6 )
+      {
+        this.bottomLeftHands();
+      }
+      if(clock == 9 || clock == 20 || clock == 17)
+      {
+        this.topRightHands();
+      }
+      if( clock == 18 || clock == 23|| clock == 10)
+      {
+        this.topLeftHands();
+      }
+    }
+
+
+    if(digit==9)
+    {
+      if(clock == 16 || clock == 17 || clock == 20 || clock == 21)
+      {
+        this.noHands();
+      }
+
+      if(clock == 7 || clock == 4 || clock == 8 ||clock == 11 ||
+        clock == 15 || clock == 18 || clock == 19)
+      {
+        this.verticalHands();
+      }
+      if(clock == 0 || clock == 5)
+      {
+        this.bottomRightHands();
+      }
+      if(clock == 3 || clock == 6 || clock == 14)
+      {
+        this.bottomLeftHands();
+      }
+      if(clock == 22 || clock == 12 || clock == 9)
+      {
+        this.topRightHands();
+      }
+      if(clock == 1 || clock == 13 || clock == 2)
+      {
+        this.horizontalHands();
+      }
+      if(clock == 23 || clock == 10)
+      {
+        this.topLeftHands();
+      }
+    }
+
 	}
 
 
@@ -351,9 +563,9 @@ function Clock(x,y)
 		{
 			hand2++;
 		}
-		
+
 	}
-	
+
 	this.bottomLeftHands = function()
 	{
 		if(hand1>180)
@@ -373,7 +585,7 @@ function Clock(x,y)
 		{
 			hand2++;
 		}
-		
+
 	}
 
 	this.bottomRightHands = function()
@@ -421,7 +633,3 @@ function Clock(x,y)
 	}
 
 }
-
-
-
-
