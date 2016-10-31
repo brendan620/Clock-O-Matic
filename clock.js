@@ -1,22 +1,23 @@
 
 var Digits=[];
 var Clocks=[];
+var Colon=[];
 
 
 function setup() {
 
   c = createCanvas(windowWidth, windowHeight);
-
+  strokeWeight(1.7);
   background(0, 0, 0);
   fill(255);
-  var spacing = 200;
+  var spacing = 300;
   for(var d =0; d<4;d++)
   {
     for (var i = 2; i < 8; i++)
       {
-      	for(var j =2; j < 6; j++)
+      	for(var j =0; j < 4; j++)
       	{
-      		Clocks.push(new Clock((j*40+(spacing*d)),(i*40)));
+      		Clocks.push(new Clock((j*60+(spacing*d)),(i*60)));
       	}
 
       }
@@ -29,10 +30,13 @@ function setup() {
 }
 
 
+
+
 }
 
 function draw() {
-    translate(windowWidth/4,windowHeight/4);
+    translate(windowWidth/4.5,windowHeight/4.5);
+
 	if(!mouseIsPressed)
 	{
 
@@ -52,6 +56,9 @@ function draw() {
 
 	else
 	{
+
+    drawColon();
+
     var d = new Date(); // for now
     hours = d.getHours(); // => 9
     if(hours>12)
@@ -83,6 +90,7 @@ function draw() {
       numbers.push(sMinutes.charAt(i));
     }
 
+
 		for(var i=0;i<Digits.length;i++)
 		{
       for(var j =0;j<Digits[i].length;j++)
@@ -94,13 +102,33 @@ function draw() {
       }
 		}
 
+
+
 	}
 
 
 }
 
 function mouseReleased(){
-  redraw();
+  clear();
+  Digits = [];
+  setup();
+}
+
+function windowResized() {
+  resizeCanvas(windowWidth, windowHeight);
+  mouseReleased();
+}
+
+
+function drawColon()
+{
+  Colon.push(new Clock((540),(180)));
+  Colon.push(new Clock((540),(360)));
+  fill(255,0,0);
+  Colon[0].drawClock();
+  Colon[1].drawClock();
+
 }
 
 function Clock(x,y)
@@ -114,7 +142,7 @@ function Clock(x,y)
 
 	this.drawClock=function()
 	{
-		ellipse(x, y, 40, 40);
+		ellipse(x, y, 60, 60);
 	}
 
 
@@ -122,8 +150,8 @@ function Clock(x,y)
 	{
 			fill(0);
 
-			line(x,y,x+(cos(radians(hand1))*(40*.4)),y+(sin(radians(hand1))*(40*.4)));
-			line(x,y,x+(cos(radians(hand2))*(40*.4)),y+(sin(radians(hand2))*(40*.4)));
+			line(x,y,x+(cos(radians(hand1))*(60*.4)),y+(sin(radians(hand1))*(60*.4)));
+			line(x,y,x+(cos(radians(hand2))*(60*.4)),y+(sin(radians(hand2))*(60*.4)));
 
 	}
 
@@ -479,20 +507,20 @@ function Clock(x,y)
 
 		if(hand1>0)
 		{
-			hand1--;
+			hand1 = hand1 - 2;
 		}
 		else if(hand1<0)
 		{
-			hand1++;
+			hand1 = hand1 + 2;
 		}
 
 		if(hand2 >180)
 		{
-			hand2--;
+			hand2 = hand2 - 2;
 		}
 		else if(hand2<180)
 		{
-			hand2++;
+			hand2 = hand2 + 2;
 		}
 
 	}
@@ -502,20 +530,20 @@ function Clock(x,y)
 	{
 		if(hand1>90)
 		{
-			hand1--;
+			hand1 = hand1 - 2;
 		}
 		else if(hand1<90)
 		{
-			hand1++;
+			hand1 = hand1 + 2;
 		}
 
 		if(hand2 >270)
 		{
-			hand2--;
+			hand2 = hand2 - 2;
 		}
 		else if(hand2<270)
 		{
-			hand2++;
+		hand2 = hand2 + 2;
 		}
 
 	}
@@ -525,20 +553,20 @@ function Clock(x,y)
 	{
 		if(hand1>180)
 		{
-			hand1--;
+			hand1 = hand1 - 2;
 		}
 		else if(hand1<180)
 		{
-			hand1++;
+			hand1 = hand1 + 2;
 		}
 
 		if(hand2 >270)
 		{
-			hand2--;
+			hand2 = hand2 - 2;
 		}
 		else if(hand2<270)
 		{
-			hand2++;
+		hand2 = hand2 + 2;
 		}
 
 	}
@@ -548,20 +576,20 @@ function Clock(x,y)
 	{
 		if(hand1>270)
 		{
-			hand1--;
+			hand1 = hand1 - 2;
 		}
 		else if(hand1<270)
 		{
-			hand1++;
+			hand1 = hand1 + 2;
 		}
 
 		if(hand2 >0)
 		{
-			hand2--;
+			hand2 = hand2 - 2;
 		}
 		else if(hand2<0)
 		{
-			hand2++;
+		hand2 = hand2 + 2;
 		}
 
 	}
@@ -570,20 +598,20 @@ function Clock(x,y)
 	{
 		if(hand1>180)
 		{
-			hand1--;
+			hand1 = hand1 - 2;
 		}
 		else if(hand1<180)
 		{
-			hand1++;
+			hand1 = hand1 + 2;
 		}
 
 		if(hand2 >90)
 		{
-			hand2--;
+			hand2 = hand2 - 2;
 		}
 		else if(hand2<90)
 		{
-			hand2++;
+		hand2 = hand2 + 2;
 		}
 
 	}
@@ -592,20 +620,20 @@ function Clock(x,y)
 	{
 		if(hand1>0)
 		{
-			hand1--;
+			hand1 = hand1 - 2;
 		}
 		else if(hand1<0)
 		{
-			hand1++;
+			hand1 = hand1 + 2;
 		}
 
 		if(hand2 >90)
 		{
-			hand2--;
+			hand2 = hand2 - 2;
 		}
 		else if(hand2<90)
 		{
-			hand2++;
+		hand2 = hand2 + 2;
 		}
 	}
 
@@ -614,20 +642,20 @@ function Clock(x,y)
 
 		if(hand1>135)
 		{
-			hand1--;
+			hand1 = hand1 - 2;
 		}
 		else if(hand1<135)
 		{
-			hand1++;
+		  hand1 = hand1 + 2;
 		}
 
 		if(hand2 >135)
 		{
-			hand2--;
+			hand2 = hand2 - 2;
 		}
 		else if(hand2<135)
 		{
-			hand2++;
+		hand2 = hand2 + 2;
 		}
 
 	}
