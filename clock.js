@@ -66,7 +66,14 @@ Return: None
 function draw() {
 
   //Sets the orgin of the canvas in order to center the Digits
-  translate(windowWidth/4.5,windowHeight/4.5);
+  if(windowWidth > 1280)
+  {
+  	translate(windowWidth/4.5,windowHeight/4.5);
+  }
+  else
+  {
+  	translate(windowWidth/10,windowHeight/10);
+  }
 
   //If the mouse is not being pressed
   //the clocks will just spin normally
